@@ -30,16 +30,16 @@ public class App {
         averageRatings(rating);
     }
 
-    public static Map <String, Integer>  averageRatings(List<Rating> rating) {
+    public static Map <String, Double>  averageRatings(List<Rating> rating) {
         //TODO Get average ratings
-        HashMap<String, Integer> myMap = new HashMap<String, Integer>();
-        HashMap<String, Integer> averageMap = new HashMap<String, Integer>();
+        HashMap<String, Double> myMap = new HashMap<String, Double>();
+        HashMap<String, Double> averageMap = new HashMap<String, Double>();
         
 
         for(Rating value: rating){ //Totalling up the ratings
-            int total = 0;
+           
             if(!myMap.containsKey(value.getMovieName())){
-                myMap.put(value.movieName, value.movieRating);
+                myMap.put(value.movieName, Double.valueOf(value.movieRating));
             }
             else{                
                 myMap.put(value.movieName, myMap.get(value.movieName) + value.movieRating);
