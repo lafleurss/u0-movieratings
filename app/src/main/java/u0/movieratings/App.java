@@ -5,6 +5,10 @@
 package u0.movieratings;
 
 import java.util.Map;
+
+import org.checkerframework.checker.units.qual.s;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.IOException;
 import java.util.List; 
@@ -27,33 +31,75 @@ public class App {
             //myMap.add(value.getMovieName(), value.getRating());
         }
         
-        averageRatings(rating);
+        averageRatings(rating, reader );        
+        highestRater(rating);
+
     }
 
-    public static Map <String, Double>  averageRatings(List<Rating> rating) {
+
+    public static Map <String, Double>  averageRatings(List<Rating> rating, RatingReader reader ) {
         //TODO Get average ratings
         HashMap<String, Double> myMap = new HashMap<String, Double>();
         HashMap<String, Double> averageMap = new HashMap<String, Double>();
         
-
         for(Rating value: rating){ //Totalling up the ratings
-           
-            if(!myMap.containsKey(value.getMovieName())){
+           if(!myMap.containsKey(value.getMovieName())){
                 myMap.put(value.movieName, Double.valueOf(value.movieRating));
             }
             else{                
                 myMap.put(value.movieName, myMap.get(value.movieName) + value.movieRating);
             }
-            //System.out.println(myMap.toString());
-        }    
-        	
+            
+        }        
+
         for (String s : myMap.keySet()) {
             // process each key in turn 
-            averageMap.put(s, myMap.get(s)/myMap.size());           
+                           
+            averageMap.put(s, (myMap.get(s)/reader.getRaterCount()));           
         } 
-
-        System.out.println(averageMap.toString());
+        System.out.println("-------------------------------"); 
+        System.out.println("Average Ratings for Movies: \n");   
+        System.out.println("-------------------------------"); 
+        for (String s : averageMap.keySet()) {
+            // process each key in turn 
+            System.out.println("Movie: " + s + " "  + String.format("%.2f", averageMap.get(s))  + "\n");
+        } 
         return averageMap;       
     }
 
+    public static String getHighestRaterForMovie(List<Rating> rating, String movieName){
+        String strRaterNames = "";
+        int currHighest = 0; 
+        for(Rating s : rating){
+            if(s.movieName.equals(movieName) ){
+                if(s.getRating()> currHighest) {
+                    currHighest = s.getRating();
+                }                     
+            }
+        }
+        for(Rating s  : rating){
+            if(s.getRating() == currHighest && s.movieName.equals(movieName)){
+                strRaterNames = strRaterNames + " " + s.getRaterName() ;              
+            }
+        }
+        //System.out.println(strRaterNames.trim());
+        return strRaterNames;
+    }
+    
+    public static  Map <String, String>  highestRater(List<Rating> rating){
+    HashMap<String, String> myMap = new HashMap<String, String>();
+        for(Rating value: rating){
+            String strRaterNames = getHighestRaterForMovie(rating, value.getMovieName());            
+            myMap.put(value.getMovieName(), strRaterNames);
+        } 
+         
+        System.out.println("-------------------------------"); 
+        System.out.println("Hightest Raters for Movies: \n");  
+        System.out.println("-------------------------------"); 
+        for (String s : myMap.keySet()) {
+            // process each key in turn 
+            System.out.println("Movie: " + s + " "  + myMap.get(s)  + "\n");
+        }     
+    return myMap;
+    }
 }

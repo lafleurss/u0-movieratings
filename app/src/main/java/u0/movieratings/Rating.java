@@ -24,4 +24,6 @@ public class Rating {
     public  int getRating(){
         return movieRating;
     }
+
+
 } 

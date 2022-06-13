@@ -7,12 +7,22 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.s;
+
 public class RatingReader {
     public String filename ;
+    public static int countRater;
+      
 
     public RatingReader(String filename) {
         this.filename = filename;
+       
     }
+
+    public int getRaterCount(){
+        return countRater;
+    }
+    
 
     public List<Rating> getAllRatings() throws IOException  {
         List<Rating> ratings = new ArrayList<>();
@@ -44,13 +54,14 @@ public class RatingReader {
                     System.out.println("line: " + line);
                     String[] raterArray = line.split(",");
                     raterLine.add(raterArray);
+                    iteration++;
                 }           
         }
         csv.close();   
 
         // TODO create the Rating and add to list
-            int raterIndex = 0;     
-            
+              
+        int raterIndex = 0;
             //while(headerIndex<headerLine.size() ){//Looping through HEADER MOVIE NAMES
             for(String movieName : headerLine){
                 for(String[] raterName: raterLine){
@@ -60,8 +71,10 @@ public class RatingReader {
                 }
                 raterIndex++;
             }
-
+            countRater = iteration;
+            //System.out.println(countRater);
         return ratings;           
     } 
 
+   
 }
